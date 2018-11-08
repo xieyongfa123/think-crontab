@@ -7,7 +7,7 @@
 
 namespace think;
 
-use think\console\Command as CommandBase;
+use think\console\Command;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\input\Option;
@@ -22,7 +22,7 @@ use think\exception\ThrowableError;
 use Throwable;
 
 
-class Crontab extends CommandBase
+class Crontab extends Command
 {
     protected $options = [
         'sleep'  => 60,
