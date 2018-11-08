@@ -15,13 +15,13 @@ if (!function_exists('push_crontab')) {
      * 添加到计划任务
      * @param string $name
      * @param string $class
-     * @param string $payload
+     * @param array $payload
      * @param integer $interval_sec
      * @return bool
      */
-    function push_crontab($name, $class, $payload = '{}', $interval_sec = 60)
+    function push_crontab($name, $class, $payload = [], $interval_sec = 60)
     {
-        $class = new \think\Crontab();
-        return $class->push($name, $class, $payload, $interval_sec);
+        $crontab = new \think\Crontab();
+        return $crontab->push($name, $class, $payload, $interval_sec);
     }
 }

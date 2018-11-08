@@ -27,12 +27,12 @@ class Crontab extends CommandBase
     protected $options = [
         'sleep'  => 60,
         'memory' => 32,
-        'table'  => 'crontabs'
+        'table'  => 'crontab'
     ];
 
     protected function configure()
     {
-        $this->setName('crontabs')
+        $this->setName('crontab')
              ->addArgument('name', Argument::OPTIONAL, "your name")
              ->addOption('memory', null, Option::VALUE_OPTIONAL, 'The memory limit in megabytes', $this->options['memory'])
              ->addOption('sleep', null, Option::VALUE_OPTIONAL, 'Number of seconds to sleep when no job is available', $this->options['sleep'])
@@ -72,7 +72,7 @@ class Crontab extends CommandBase
                 ['status', '=', 1],
                 ['next_execute_time', '<=', date('Y-m-d H:i:s', $time)]
             ];
-            $list                  = Db::connect('tx')->name($this->options['table'])->where($map)->select();
+            $list                  = Db::name($this->options['table'])->where($map)->select();
             $next_execute_time_arr = [];
             $sleep                 = 60; //默认休眠60秒
             foreach ($list as $key => $val) {
@@ -87,10 +87,10 @@ class Crontab extends CommandBase
                     $this->resolveAndFire($val['class'], $payload);
                 } catch (\Exception $e) {
                     $this->output($e->getMessage());
-                    sleep(3); //异常休眠一秒 防止死循环
+                    sleep(3); //异常休眠3秒 防止死循环
                 }
                 //无论是否出现异常 本周期都不再执行了
-                Db::connect('tx')->name($this->options['table'])->where('id', $val['id'])->update([
+                Db::name($this->options['table'])->where('id', $val['id'])->update([
                     'last_execute_time' => date('Y-m-d H:i:s', $time),
                     'next_execute_time' => $next_execute_time,
                     'update_time'       => date('Y-m-d H:i:s')
@@ -119,12 +119,12 @@ class Crontab extends CommandBase
         }
     }
 
-    public function push($name, $class, $payload = '{}', $interval_sec = 60)
+    public function push($name, $class, $payload = [], $interval_sec = 60)
     {
-        return Db::connect('tx')->name($this->options['table'])->insert([
+        return Db::name($this->options['table'])->insert([
             'name'              => $name,
             'class'             => $class,
-            'payload'           => $payload,
+            'payload'           => json_encode($payload, JSON_UNESCAPED_UNICODE),
             'interval_sec'      => $interval_sec,
             'next_execute_time' => date('Y-m-d H:i:s'),
             'create_time'       => date('Y-m-d H:i:s'),

@@ -1,8 +1,5 @@
 # think-crontab for ThinkPHP5.1.*
 
-## 声明
-
-> composer require xieyongfa/think-crontab
 ## 安装
 
 > composer require xieyongfa/think-crontab
@@ -28,13 +25,18 @@ CREATE TABLE `crontab`  (
 
 ## 创建计划任务
 
-> `push_crontab($name, $class, $payload = '{}', $interval_sec = 60)`
+> `push_crontab($name, $class, $payload = [], $interval_sec = 60)`
 
 `$name` 是任务名  
 `$class` 是类名  
-`$payload` 是参数 json字符串  
-`$interval_sec` 是任务执行周期
+`$payload` 是参数 数组格式 
+`$interval_sec` 是任务执行周期 默认60秒
 
+### 创建计划任务例子
+```
+$payload = ['name' => 'thinkphp'];
+push_crontab('test', 'app\\test\\controller\\echo_date', $payload, 60);
+```
 ## 监听计划并执行,强烈建议配合supervisor使用，保证进程常驻
 
 > php think crontab --sleep=60 --memory=8
