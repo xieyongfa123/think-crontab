@@ -28,8 +28,11 @@ CREATE TABLE `crontab`  (
 > `push_crontab($name, $class, $payload = [], $interval_sec = 60)`
 
 `$name` 是任务名  
-`$class` 是类名  
-`$payload` 是参数 数组格式 
+
+`$class` 是类名
+
+`$payload` 是参数 数组格式
+
 `$interval_sec` 是任务执行周期 默认60秒
 
 ### 创建计划任务例子
@@ -43,3 +46,7 @@ push_crontab('test', 'app\\test\\controller\\echo_date', $payload, 60);
 
 sleep参数:间隔多久查询一次 单位秒
 memory参数:单个进程消耗内存超过多少M自动退出(配合supervisor可达到自动重启效果,防止内存溢出)
+
+## 开发帮助及交流
+* **作者QQ：2392523899**
+* **开发交流QQ群：453142313（新）**
